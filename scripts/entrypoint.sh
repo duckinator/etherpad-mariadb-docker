@@ -4,19 +4,19 @@ cat <<-EOF > settings.json
 {
     "title": "Etherpad",
     "ip": "0.0.0.0",
-    "port": 9001,
+    "port": ${ETHERPAD_PORT},
     "dbType": "mysql",
     "dbSettings": {
         "host": "database",
         "port": 3306,
-        "database": "etherpad",
-        "user": "etherpad",
-        "password": "password",
+        "database": "${MYSQL_DATABASE}",
+        "user": "${MYSQL_USER}",
+        "password": "${MYSQL_PASSWORD}",
         "charset": "utf8mb4"
     },
     "users": {
-        "ADMIN_USER": {
-            "password": "ADMIN_PASS",
+        "${ETHERPAD_ADMIN_USER}": {
+            "password": "${ETHERPAD_ADMIN_PASSWORD}",
             "is_admin": true
         }
     }
