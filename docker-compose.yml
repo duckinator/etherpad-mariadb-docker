@@ -2,17 +2,18 @@ version: '3.7'
 services:
   web:
     image: etherpad/etherpad:1.8.4
+    env_file: etherpad.env
     ports:
     - "9001:9001"
     depends_on:
     - database
     restart: on-failure
     volumes:
-    - ./settings.json:/opt/etherpad-lite/settings.json:z
     - ./scripts:/scripts:z
-    command: sh -c '/scripts/wait-for-mariadb.sh && /scripts/run-etherpad.sh'
+    command: sh -c '/scripts/entrypoint.sh'
   database:
     image: mariadb:10.5.5
+    env_file: etherpad.env
     # TODO: Don't expose database ports once we're done.
     ports:
     - "3306:3306"
@@ -20,8 +21,3 @@ services:
     volumes:
     - ./data:/var/lib/mysql:z
     - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:z
-    environment:
-      MYSQL_DATABASE: 'etherpad'
-      MYSQL_USER: 'etherpad'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
